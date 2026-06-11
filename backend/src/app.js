@@ -9,6 +9,7 @@ const { errorHandler } = require('./middleware/error-handler');
 const analyzeRoutes = require('./routes/analyze');
 const authRoutes = require('./routes/auth');
 const reportRoutes = require('./routes/report');
+const exportRoutes = require('./routes/export');
 
 const app = express();
 
@@ -67,6 +68,7 @@ app.get('/health', (req, res) => {
 app.use('/api/v1/analyze', analyzeRoutes);
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/report', reportRoutes);
+app.use('/api/v1/export', exportRoutes);
 
 app.use((req, res) => {
   res.status(404).json({ success: false, error: 'Not found' });
