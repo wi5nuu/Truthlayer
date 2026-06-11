@@ -1,0 +1,16 @@
+name: Bug Report
+description: Report a bug in TruthLayer
+labels: [bug]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: What happened?
+    validations:
+      required: true
+  - type: dropdown
+    id: component
+    attributes:
+      label: Component
+      options: [Extension, Backend, Web]
