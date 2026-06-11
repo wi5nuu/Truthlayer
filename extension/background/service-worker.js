@@ -26,13 +26,7 @@ chrome.runtime.onInstalled.addListener((details) => {
         tier: 'free'
       }
     });
-    chrome.notifications.create({
-      type: 'basic',
-      iconUrl: 'icons/icon-48.svg',
-      title: 'TruthLayer is Active',
-      message: 'Every website wants something from you. Now you know what it is.',
-      priority: 1
-    });
+    chrome.tabs.create({ url: chrome.runtime.getURL('welcome/welcome.html') });
   }
 });
 
@@ -188,3 +182,16 @@ async function incrementAnalysisCount() {
     await chrome.storage.local.set({ analysisCount: analysisCount + 1 });
   } catch {}
 }
+
+chrome.commands.onCommand.addListener(async (command) => {
+  if (command === 'toggle-analysis') {
+    const { settings } = await chrome.storage.local.get('settings');
+    const updated = { ...(settings || {}), autoAnalyze: !(settings?.autoAnalyze ?? true) };
+    await chrome.storage.local.set({ settings: updated });
+    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+    if (tab?.id) {
+      chrome.action.setBadgeText({ text: updated.autoAnalyze ? 'ON' : 'OFF', tabId: tab.id });
+      setTimeout(() => resetBadge(tab.id), 2000);
+    }
+  }
+});
