@@ -8,6 +8,8 @@ describe("GET /health", () => {
     expect(res.body).toMatchObject({
       status: "ok",
       uptime: expect.any(Number),
+      version: expect.any(String),
+      timestamp: expect.any(String),
     });
   });
 });
