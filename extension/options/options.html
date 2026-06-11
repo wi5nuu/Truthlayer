@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TruthLayer Settings</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo">TL</div>
+      <h1>TruthLayer Settings</h1>
+    </header>
+
+    <section>
+      <h2>Analysis</h2>
+      <label class="toggle-row">
+        <span>Auto-analyze on page load</span>
+        <input type="checkbox" id="autoAnalyze">
+        <span class="toggle"></span>
+      </label>
+      <label class="toggle-row">
+        <span>Show badge on toolbar</span>
+        <input type="checkbox" id="showBadge">
+        <span class="toggle"></span>
+      </label>
+    </section>
+
+    <section>
+      <h2>API Configuration</h2>
+      <div class="input-row">
+        <label>API Base URL</label>
+        <input type="text" id="apiUrl" placeholder="http://localhost:3001">
+      </div>
+      <div class="input-row">
+        <label>Tier</label>
+        <select id="tier">
+          <option value="free">Free</option>
+          <option value="pro">Pro</option>
+        </select>
+      </div>
+    </section>
+
+    <section>
+      <h2>About</h2>
+      <p class="about-text">TruthLayer v1.0.0 — Reveal every website's hidden intent.</p>
+    </section>
+
+    <div class="actions">
+      <button id="saveBtn">Save Settings</button>
+      <span id="savedMsg" class="hidden">Saved!</span>
+    </div>
+  </div>
+  <script src="options.js"></script>
+</body>
+</html>
