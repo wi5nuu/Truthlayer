@@ -1,0 +1,4 @@
+* @truthlayer/core
+backend/ @truthlayer/backend
+web/ @truthlayer/web
+extension/ @truthlayer/extension
