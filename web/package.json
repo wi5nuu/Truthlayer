@@ -8,8 +8,11 @@
     "start": "next start",
     "lint": "next lint"
   },
+  "optionalDependencies": {
+    "@next/swc-linux-x64-gnu": "^15.5.19",
+    "@next/swc-win32-x64-msvc": "^15.5.19"
+  },
   "dependencies": {
-    "@next/swc-win32-x64-msvc": "^15.5.19",
     "@radix-ui/react-tooltip": "^1.0.7",
     "framer-motion": "^10.16.16",
     "next": "^15.4.0",
