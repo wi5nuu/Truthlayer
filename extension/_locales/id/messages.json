@@ -1,0 +1,50 @@
+{
+  "appName": {
+    "message": "TruthLayer"
+  },
+  "appShortName": {
+    "message": "TruthLayer"
+  },
+  "appDescription": {
+    "message": "Setiap website ingin sesuatu dari kamu. Sekarang kamu tahu apa itu."
+  },
+  "trustScoreLabel": {
+    "message": "Trust Score"
+  },
+  "hiddenIntentTitle": {
+    "message": "Niat Tersembunyi Website Ini"
+  },
+  "darkPatternsTitle": {
+    "message": "Dark Patterns"
+  },
+  "aiContentTitle": {
+    "message": "Konten AI"
+  },
+  "dataCollectedTitle": {
+    "message": "Data Terkumpul"
+  },
+  "manipulationTitle": {
+    "message": "Manipulasi"
+  },
+  "viewFullReport": {
+    "message": "Lihat Laporan Lengkap"
+  },
+  "analyzingMessage": {
+    "message": "Sedang menganalisis..."
+  },
+  "errorMessage": {
+    "message": "Gagal menganalisis halaman ini"
+  },
+  "retryButton": {
+    "message": "Coba Lagi"
+  },
+  "highTrustLabel": {
+    "message": "Sangat Terpercaya"
+  },
+  "mediumTrustLabel": {
+    "message": "Cukup Terpercaya"
+  },
+  "lowTrustLabel": {
+    "message": "Gunakan Dengan Hati-hati"
+  }
+}

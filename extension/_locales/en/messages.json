@@ -1,0 +1,50 @@
+{
+  "appName": {
+    "message": "TruthLayer"
+  },
+  "appShortName": {
+    "message": "TruthLayer"
+  },
+  "appDescription": {
+    "message": "Every website wants something from you. Now you know what it is."
+  },
+  "trustScoreLabel": {
+    "message": "Trust Score"
+  },
+  "hiddenIntentTitle": {
+    "message": "Hidden Intent of This Website"
+  },
+  "darkPatternsTitle": {
+    "message": "Dark Patterns"
+  },
+  "aiContentTitle": {
+    "message": "AI Content"
+  },
+  "dataCollectedTitle": {
+    "message": "Data Collected"
+  },
+  "manipulationTitle": {
+    "message": "Manipulation"
+  },
+  "viewFullReport": {
+    "message": "View Full Report"
+  },
+  "analyzingMessage": {
+    "message": "Analyzing..."
+  },
+  "errorMessage": {
+    "message": "Unable to analyze this page"
+  },
+  "retryButton": {
+    "message": "Try Again"
+  },
+  "highTrustLabel": {
+    "message": "Highly Trustworthy"
+  },
+  "mediumTrustLabel": {
+    "message": "Generally Trustworthy"
+  },
+  "lowTrustLabel": {
+    "message": "Use With Caution"
+  }
+}

@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TruthLayer — Analisis Kepercayaan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="popup.css">
+</head>
+
+<body>
+  <div id="app">
+
+    <!-- HEADER -->
+    <header class="header">
+      <div class="header-left">
+        <div class="logo-wrap">
+          <img src="truthlayer.png" alt="TruthLayer" width="28" height="28"
+            style="object-fit:contain;border-radius:6px;">
+        </div>
+        <div class="brand-group">
+          <span class="brand-name">TruthLayer</span>
+          <span class="brand-sub">Web Trust Analyzer</span>
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="live-dot-wrap" title="Analisis Realtime Aktif">
+          <span class="live-dot"></span>
+          <span class="live-label">LIVE</span>
+        </div>
+        <button class="icon-btn" id="settingsBtn" title="Pengaturan">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3" />
+            <path
+              d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- CONTENT AREA -->
+    <div id="content">
+
+      <!-- LOADING STATE -->
+      <div id="loadingState" class="state hidden">
+        <div class="loading-orb">
+          <div class="orb-ring orb-ring-1"></div>
+          <div class="orb-ring orb-ring-2"></div>
+          <div class="orb-ring orb-ring-3"></div>
+          <img src="truthlayer.png" alt="TruthLayer" width="32" height="32"
+            style="object-fit:contain;filter:drop-shadow(0 0 8px rgba(13,147,115,0.7));border-radius:50%;">
+        </div>
+        <p class="loading-title">Menganalisis Website</p>
+        <p class="loading-sub" id="loadingStep">Memuat data halaman...</p>
+        <div class="loading-progress">
+          <div class="loading-progress-bar" id="loadingBar"></div>
+        </div>
+      </div>
+
+      <!-- ERROR STATE -->
+      <div id="errorState" class="state hidden">
+        <div class="error-orb">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10" />
+            <line x1="12" y1="8" x2="12" y2="12" />
+            <line x1="12" y1="16" x2="12.01" y2="16" />
+          </svg>
+        </div>
+        <p class="error-title">Analisis Gagal</p>
+        <p class="error-text">Tidak dapat menganalisis halaman ini. Pastikan Anda terhubung ke internet.</p>
+        <button class="retry-btn" id="retryBtn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="23 4 23 10 17 10" />
+            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
+          </svg>
+          Coba Lagi
+        </button>
+      </div>
+
+      <!-- RESULTS STATE -->
+      <div id="resultsState" class="state hidden">
+
+        <!-- SITE INFO ROW -->
+        <div class="site-row">
+          <div class="site-favicon-wrap">
+            <img class="site-favicon" id="siteFavicon" src="" alt=""
+              onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+            <div class="site-favicon-fallback" style="display:none">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="2" y1="12" x2="22" y2="12" />
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+              </svg>
+            </div>
+          </div>
+          <div class="site-info">
+            <span class="site-domain" id="siteDomain">example.com</span>
+            <span class="site-category" id="siteCategory">Website Umum</span>
+          </div>
+          <div class="score-pill" id="scorePill">
+            <span class="score-pill-value" id="trustScoreValue">--</span>
+            <span class="score-pill-sep">/</span>
+            <span class="score-pill-max">100</span>
+          </div>
+        </div>
+
+        <!-- MAIN SCORE SECTION -->
+        <div class="score-section">
+          <div class="score-ring-container">
+            <svg class="score-ring-svg" viewBox="0 0 160 160">
+              <!-- Background track -->
+              <circle cx="80" cy="80" r="68" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="8" />
+              <!-- Glow layer -->
+              <circle cx="80" cy="80" r="68" fill="none" stroke="#0D9373" stroke-width="16" stroke-linecap="round"
+                id="scoreRingGlow" stroke-dasharray="427.26" stroke-dashoffset="427.26" transform="rotate(-90 80 80)"
+                class="ring-glow" />
+              <!-- Main ring -->
+              <circle cx="80" cy="80" r="68" fill="none" stroke="#0D9373" stroke-width="8" stroke-linecap="round"
+                id="scoreRing" stroke-dasharray="427.26" stroke-dashoffset="427.26" transform="rotate(-90 80 80)" />
+              <!-- Tick marks -->
+              <g class="ring-ticks" opacity="0.2">
+                <line x1="80" y1="5" x2="80" y2="14" stroke="white" stroke-width="1.5" transform="rotate(0 80 80)" />
+                <line x1="80" y1="5" x2="80" y2="14" stroke="white" stroke-width="1.5" transform="rotate(36 80 80)" />
+                <line x1="80" y1="5" x2="80" y2="14" stroke="white" stroke-width="1.5" transform="rotate(72 80 80)" />
+                <line x1="80" y1="5" x2="80" y2="14" stroke="white" stroke-width="1.5" transform="rotate(108 80 80)" />
+                <line x1="80" y1="5" x2="80" y2="14" stroke="white" stroke-width="1.5" transform="rotate(144 80 80)" />
+                <line x1="80" y1="5" x2="80" y2="14" stroke="white" stroke-width="1.5" transform="rotate(180 80 80)" />
+                <line x1="80" y1="5" x2="80" y2="14" stroke="white" stroke-width="1.5" transform="rotate(216 80 80)" />
+                <line x1="80" y1="5" x2="80" y2="14" stroke="white" stroke-width="1.5" transform="rotate(252 80 80)" />
+                <line x1="80" y1="5" x2="80" y2="14" stroke="white" stroke-width="1.5" transform="rotate(288 80 80)" />
+                <line x1="80" y1="5" x2="80" y2="14" stroke="white" stroke-width="1.5" transform="rotate(324 80 80)" />
+              </g>
+            </svg>
+            <div class="score-center">
+              <div class="score-number" id="trustScoreNumber">--</div>
+              <div class="score-unit">/ 100</div>
+            </div>
+          </div>
+
+          <div class="score-info">
+            <div class="score-label-badge" id="scoreLabelBadge">
+              <span class="score-label-dot" id="scoreLabelDot"></span>
+              <span class="score-label-text" id="trustScoreLabel">Menganalisis...</span>
+            </div>
+            <p class="score-desc" id="scoreDesc">Mengumpulkan data kepercayaan website ini.</p>
+            <!-- Mini realtime pulses -->
+            <div class="score-live-row">
+              <div class="pulse-dot pulse-green" id="pulseSafety"></div>
+              <span class="pulse-label">Keamanan</span>
+              <div class="pulse-dot pulse-blue" id="pulsePrivacy"></div>
+              <span class="pulse-label">Privasi</span>
+              <div class="pulse-dot pulse-orange" id="pulseTrans"></div>
+              <span class="pulse-label">Transparansi</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- HIDDEN INTENTS SECTION -->
+        <div class="section">
+          <div class="section-header">
+            <div class="section-icon section-icon--shield">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+              </svg>
+            </div>
+            <span class="section-title">NIAT TERSEMBUNYI WEBSITE INI</span>
+            <div class="section-badge" id="intentCount">0</div>
+          </div>
+          <div id="intentsList" class="intents-list"></div>
+        </div>
+
+        <!-- METRICS GRID -->
+        <div class="metrics-row">
+          <div class="metric-card metric-card--danger" id="metricDark">
+            <div class="metric-top">
+              <div class="metric-icon-wrap metric-icon--danger">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path
+                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+              </div>
+              <span class="metric-value" id="darkPatternsCount">--</span>
+            </div>
+            <span class="metric-label">Dark Patterns</span>
+            <div class="metric-bar-wrap">
+              <div class="metric-bar metric-bar--danger" id="darkPatternsBar" style="width:0%"></div>
+            </div>
+          </div>
+
+          <div class="metric-card metric-card--ai" id="metricAI">
+            <div class="metric-top">
+              <div class="metric-icon-wrap metric-icon--ai">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path
+                    d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 1 1 7.072 0l-.548.547A3.374 3.374 0 0 0 14 18.469V19a2 2 0 1 1-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                </svg>
+              </div>
+              <span class="metric-value" id="aiContentValue">--</span>
+            </div>
+            <span class="metric-label">Konten AI</span>
+            <div class="metric-bar-wrap">
+              <div class="metric-bar metric-bar--ai" id="aiContentBar" style="width:0%"></div>
+            </div>
+          </div>
+
+          <div class="metric-card metric-card--data" id="metricData">
+            <div class="metric-top">
+              <div class="metric-icon-wrap metric-icon--data">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <ellipse cx="12" cy="5" rx="9" ry="3" />
+                  <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" />
+                  <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
+                </svg>
+              </div>
+              <span class="metric-value" id="dataCollectedValue">--</span>
+            </div>
+            <span class="metric-label">Data Terkumpul</span>
+            <div class="metric-bar-wrap">
+              <div class="metric-bar metric-bar--data" id="dataCollectedBar" style="width:0%"></div>
+            </div>
+          </div>
+
+          <div class="metric-card metric-card--warn" id="metricManip">
+            <div class="metric-top">
+              <div class="metric-icon-wrap metric-icon--warn">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                  <line x1="12" y1="9" x2="12" y2="13" />
+                  <line x1="12" y1="17" x2="12.01" y2="17" />
+                </svg>
+              </div>
+              <span class="metric-value" id="manipulationValue">--</span>
+            </div>
+            <span class="metric-label">Manipulasi</span>
+            <div class="metric-bar-wrap">
+              <div class="metric-bar metric-bar--warn" id="manipulationBar" style="width:0%"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- LAST UPDATED / REALTIME ROW -->
+        <div class="realtime-row">
+          <div class="realtime-indicator">
+            <span class="realtime-dot"></span>
+            <span class="realtime-text">Realtime</span>
+          </div>
+          <span class="last-updated" id="lastUpdated">—</span>
+        </div>
+
+        <!-- CTA BUTTON -->
+        <button class="cta-btn" id="viewReportBtn">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+            <polyline points="14 2 14 8 20 8" />
+            <line x1="16" y1="13" x2="8" y2="13" />
+            <line x1="16" y1="17" x2="8" y2="17" />
+            <polyline points="10 9 9 9 8 9" />
+          </svg>
+          <span>Lihat Laporan Lengkap</span>
+          <svg class="cta-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2.5">
+            <line x1="5" y1="12" x2="19" y2="12" />
+            <polyline points="12 5 19 12 12 19" />
+          </svg>
+        </button>
+
+      </div><!-- end resultsState -->
+    </div><!-- end content -->
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <span class="footer-brand">truthlayer.io</span>
+      <span class="footer-ver">v2.0</span>
+    </footer>
+
+  </div>
+  <script src="popup.js"></script>
+</body>
+
+</html>

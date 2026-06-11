@@ -1,0 +1,216 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+/* =====================
+   BASE
+   ===================== */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: #080F0F;
+  color: #E8F5F2;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* =====================
+   BRAND GRADIENTS
+   ===================== */
+.gradient-bg {
+  background:
+    radial-gradient(ellipse 800px 500px at 50% -100px, rgba(13,147,115,0.18) 0%, transparent 70%),
+    radial-gradient(ellipse 400px 400px at 0% 60%,    rgba(13,147,115,0.07) 0%, transparent 70%),
+    radial-gradient(ellipse 300px 300px at 100% 80%,  rgba(13,147,115,0.06) 0%, transparent 70%),
+    #080F0F;
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #0D9373 0%, #26D9A8 50%, #1DB88F 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-text-hero {
+  background: linear-gradient(135deg, #26D9A8 0%, #1DB88F 60%, #0D9373 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* =====================
+   GLOW EFFECTS
+   ===================== */
+.glow-teal {
+  box-shadow: 0 0 30px rgba(13,147,115,0.35), 0 4px 20px rgba(0,0,0,0.3);
+}
+
+.glow-teal-sm {
+  box-shadow: 0 0 16px rgba(13,147,115,0.3);
+}
+
+/* =====================
+   GLASS CARD
+   ===================== */
+.glass-card {
+  background: rgba(13, 26, 26, 0.7);
+  border: 1px solid rgba(13,147,115,0.15);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.glass-card-hover {
+  transition: border-color 0.25s ease, background 0.25s ease, transform 0.25s ease,
+              box-shadow 0.25s ease;
+}
+.glass-card-hover:hover {
+  border-color: rgba(13,147,115,0.35);
+  background: rgba(17, 32, 32, 0.85);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 32px rgba(13,147,115,0.15);
+}
+
+/* =====================
+   NAV BLUR
+   ===================== */
+.nav-blur {
+  background: rgba(8,15,15,0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(13,147,115,0.12);
+}
+
+/* =====================
+   ANIMATIONS
+   ===================== */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-8px); }
+}
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.3; }
+}
+@keyframes shimmer {
+  0%   { left: -100%; }
+  100% { left: 100%; }
+}
+@keyframes ringPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(13,147,115,0.5); }
+  50%       { box-shadow: 0 0 0 12px rgba(13,147,115,0); }
+}
+
+.animate-fade-up   { animation: fadeUp 0.7s ease forwards; }
+.animate-fade-in   { animation: fadeIn 0.6s ease forwards; }
+.animate-float     { animation: float 4s ease-in-out infinite; }
+.animate-blink     { animation: blink 1.8s ease-in-out infinite; }
+.animate-ring      { animation: ringPulse 2s ease-in-out infinite; }
+
+.delay-100 { animation-delay: 100ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-400 { animation-delay: 400ms; }
+.delay-500 { animation-delay: 500ms; }
+.delay-600 { animation-delay: 600ms; }
+
+/* =====================
+   SCROLLBAR
+   ===================== */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: #080F0F; }
+::-webkit-scrollbar-thumb { background: rgba(13,147,115,0.4); border-radius: 4px; }
+
+/* =====================
+   SECTION DIVIDER
+   ===================== */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(13,147,115,0.3), transparent);
+}
+
+/* =====================
+   MOBILE MENU
+   ===================== */
+.mobile-menu {
+  display: none;
+}
+@media (max-width: 767px) {
+  .mobile-menu.open {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 57px;
+    left: 0; right: 0;
+    background: rgba(8,15,15,0.97);
+    border-bottom: 1px solid rgba(13,147,115,0.15);
+    padding: 1.5rem;
+    gap: 1rem;
+    z-index: 99;
+    backdrop-filter: blur(20px);
+  }
+}
+
+/* =====================
+   CTA BUTTON SHIMMER
+   ===================== */
+.btn-primary {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #0D9373 0%, #065F46 100%);
+  transition: all 0.25s ease;
+}
+.btn-primary::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+  transition: left 0.5s ease;
+}
+.btn-primary:hover::after { left: 100%; }
+.btn-primary:hover {
+  background: linear-gradient(135deg, #1DB88F 0%, #0D9373 100%);
+  box-shadow: 0 6px 24px rgba(13,147,115,0.45);
+  transform: translateY(-2px);
+}
+.btn-primary:active { transform: translateY(0); }
+
+/* =====================
+   INPUT FOCUS
+   ===================== */
+.input-teal:focus {
+  border-color: rgba(13,147,115,0.6) !important;
+  box-shadow: 0 0 0 3px rgba(13,147,115,0.12);
+  outline: none;
+}
+
+/* =====================
+   STAT NUMBER
+   ===================== */
+.stat-number {
+  background: linear-gradient(135deg, #26D9A8, #0D9373);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* =====================
+   SCORE BADGE
+   ===================== */
+.score-ring {
+  position: relative;
+  display: flex; align-items: center; justify-content: center;
+}
