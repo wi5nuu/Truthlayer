@@ -737,8 +737,8 @@ export default function LandingPage() {
 
             <div className="flex items-center gap-4">
               {[
-                { label: 'Privacy', href: '#' },
-                { label: 'Terms', href: '#' },
+                { label: 'About', href: '/about' },
+                { label: 'Privacy', href: '/privacy' },
                 { label: 'GitHub', href: 'https://github.com/truthlayer' },
               ].map((link) => (
                 <a key={link.label} href={link.href}
