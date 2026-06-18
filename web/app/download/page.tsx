@@ -8,49 +8,56 @@ const EXTENSION_PATH = 'extension/';
 const browsers = [
   {
     name: 'Google Chrome',
-    icon: 'https://www.google.com/chrome/static/images/favicon.ico',
+    emoji: '🌐',
+    color: 'from-blue-500/20 to-blue-600/10',
     supported: true,
     version: 'Chrome 88+',
     note: 'Fully supported — Manifest V3',
   },
   {
     name: 'Microsoft Edge',
-    icon: 'https://edge.microsoft.com/favicon.ico',
+    emoji: '🌀',
+    color: 'from-teal-500/20 to-teal-600/10',
     supported: true,
     version: 'Edge 88+',
     note: 'Fully supported — Chromium-based',
   },
   {
     name: 'Brave',
-    icon: 'https://brave.com/static-assets/images/brave-favicon.png',
+    emoji: '🦁',
+    color: 'from-orange-500/20 to-orange-600/10',
     supported: true,
     version: 'Brave 1.0+',
     note: 'Fully supported — Chromium-based',
   },
   {
     name: 'Opera',
-    icon: 'https://www.opera.com/favicon.ico',
+    emoji: '🔴',
+    color: 'from-red-500/20 to-red-600/10',
     supported: true,
     version: 'Opera 74+',
     note: 'Supported via "Load unpacked"',
   },
   {
     name: 'Vivaldi',
-    icon: 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ccircle cx=%2250%22 cy=%2250%22 r=%2245%22 fill=%22%23EF3939%22/%3E%3Ctext x=%2250%22 y=%2255%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2230%22 font-weight=%22bold%22%3EV%3C/text%3E%3C/svg%3E',
+    emoji: '🎭',
+    color: 'from-red-500/20 to-red-600/10',
     supported: true,
     version: 'Vivaldi 3.0+',
     note: 'Supported — Chromium-based',
   },
   {
     name: 'Firefox',
-    icon: 'https://www.mozilla.org/media/img/favicons/firefox/favicon.ico',
+    emoji: '🦊',
+    color: 'from-orange-500/10 to-orange-600/5',
     supported: false,
     version: 'Coming Soon',
     note: 'In development — MV3 migration',
   },
   {
     name: 'Safari',
-    icon: 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Cpath fill=%22%23007AFF%22 d=%22M50 2L2 50l48 48 48-48z%22/%3E%3C/svg%3E',
+    emoji: '🧭',
+    color: 'from-blue-500/10 to-blue-600/5',
     supported: false,
     version: 'Planned',
     note: 'On roadmap — Safari Web Extensions',
@@ -127,17 +134,6 @@ const installSteps = [
   },
 ];
 
-function BrowserIcon({ src, name }: { src: string; name: string }) {
-  return (
-    <img
-      src={src}
-      alt={name}
-      className="w-8 h-8 object-contain"
-      onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-    />
-  );
-}
-
 export default function DownloadPage() {
   return (
     <main className="min-h-screen gradient-bg">
@@ -190,8 +186,8 @@ export default function DownloadPage() {
                   ? 'bg-dark-800/60 border-dark-600 hover:border-primary-600/40'
                   : 'bg-dark-800/30 border-dark-700/30 opacity-50'
               } transition-all`}>
-                <div className="flex justify-center mb-3">
-                  <BrowserIcon src={b.icon} name={b.name} />
+                <div className={`w-10 h-10 mx-auto mb-3 rounded-xl bg-gradient-to-br ${b.color} border border-dark-600 flex items-center justify-center text-lg`}>
+                  {b.emoji}
                 </div>
                 <p className="text-sm font-semibold text-dark-100 mb-1">{b.name}</p>
                 <p className={`text-[10px] font-mono ${
