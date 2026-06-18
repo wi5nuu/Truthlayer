@@ -131,7 +131,7 @@ const faqs = [
   },
   {
     q: 'Browser apa saja yang didukung?',
-    a: 'Saat ini TruthLayer tersedia untuk Google Chrome dan browser berbasis Chromium (Brave, Edge, Opera). Dukungan Firefox sedang dalam pengembangan.',
+    a: 'TruthLayer mendukung semua browser berbasis Chromium: Google Chrome (88+), Microsoft Edge (88+), Brave (1.0+), Opera (74+), dan Vivaldi (3.0+). Cukup ikuti petunjuk instalasi di halaman Download. Dukungan untuk Firefox dan Safari sedang dalam pengembangan.',
   },
   {
     q: 'Seberapa akurat deteksi dark pattern-nya?',
@@ -180,9 +180,9 @@ const changelog = [
 const navLinks = [
   { label: 'Features', href: '#features' },
   { label: 'How It Works', href: '#how-it-works' },
+  { label: 'Browsers', href: '#browsers' },
   { label: 'Privacy', href: '#privacy' },
   { label: 'FAQ', href: '#faq' },
-  { label: 'Changelog', href: '#changelog' },
 ];
 
 /* ══════════════════════════════════════════════
@@ -509,6 +509,61 @@ export default function LandingPage() {
                 <div className="font-bold text-dark-100 text-sm mb-1">Tidak ada izin berbahaya</div>
                 <p className="text-dark-400 text-sm leading-relaxed">
                   TruthLayer tidak meminta izin <code className="text-primary-300 bg-primary-600/10 px-1 rounded text-xs">history</code>, <code className="text-primary-300 bg-primary-600/10 px-1 rounded text-xs">bookmarks</code>, <code className="text-primary-300 bg-primary-600/10 px-1 rounded text-xs">&lt;all_urls&gt;</code>, atau izin sistem lainnya yang bersifat invasif.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div className="section-divider mx-8" />
+
+      {/* ══════ BROWSER SUPPORT ══════ */}
+      <section id="browsers" className="py-24 px-5 md:px-8">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-14">
+            <p className="text-primary-400 text-xs font-bold tracking-widest uppercase mb-3">Compatibility</p>
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4">Tersedia untuk Semua Browser Utama</h2>
+            <p className="text-dark-400 max-w-xl mx-auto text-sm leading-relaxed">
+              TruthLayer bekerja di semua browser berbasis Chromium. Instalasi cukup sekali, dan ekstensi siap digunakan di browser pilihan Anda.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+            {[
+              { name: 'Google Chrome', icon: 'chrome', color: 'from-blue-500/20 to-blue-600/10', supported: true },
+              { name: 'Microsoft Edge', icon: 'edge', color: 'from-teal-500/20 to-teal-600/10', supported: true },
+              { name: 'Brave', icon: 'brave', color: 'from-orange-500/20 to-orange-600/10', supported: true },
+              { name: 'Opera', icon: 'opera', color: 'from-red-500/20 to-red-600/10', supported: true },
+              { name: 'Firefox', icon: 'firefox', color: 'from-orange-500/10 to-orange-600/5', supported: false },
+            ].map((b) => (
+              <div key={b.name} className={`glass-card rounded-2xl p-5 text-center ${b.supported ? 'glass-card-hover' : 'opacity-50'}`}>
+                <div className={`w-12 h-12 mx-auto mb-3 rounded-xl bg-gradient-to-br ${b.color} border border-dark-600 flex items-center justify-center`}>
+                  <span className="text-xl">{b.icon === 'chrome' ? '🔵' : b.icon === 'edge' ? '🔷' : b.icon === 'brave' ? '🦁' : b.icon === 'opera' ? '🔴' : '🦊'}</span>
+                </div>
+                <p className="text-sm font-semibold text-dark-100 mb-1">{b.name}</p>
+                <span className={`text-[10px] px-2 py-0.5 rounded-full font-semibold ${
+                  b.supported
+                    ? 'bg-green-900/30 text-green-400 border border-green-700/30'
+                    : 'bg-yellow-900/30 text-yellow-400 border border-yellow-700/30'
+                }`}>
+                  {b.supported ? '✓ Supported' : 'Coming Soon'}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-8 glass-card rounded-2xl p-6 border border-primary-600/20">
+            <div className="flex items-start gap-3">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="text-primary-400 flex-shrink-0 mt-0.5">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+              </svg>
+              <div>
+                <div className="font-bold text-dark-100 text-sm mb-1">Semua Browser Chromium Didukung Penuh</div>
+                <p className="text-dark-400 text-sm leading-relaxed">
+                  Chrome, Edge, Brave, Opera, dan Vivaldi — semuanya didukung dengan fitur yang identik.
+                  Instalasi cukup dilakukan sekali. Firefox dan Safari sedang dalam pengembangan dan akan tersedia di rilis mendatang.
+                  Lihat panduan instalasi lengkap di <a href="/download" className="text-primary-400 hover:text-primary-300 underline">halaman Download</a>.
                 </p>
               </div>
             </div>

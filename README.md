@@ -144,20 +144,56 @@ Setiap hasil analisis otomatis menghasilkan halaman publik yang bisa dibagikan:
 
 ---
 
+## Browser & Platform Support
+
+TruthLayer berjalan di **semua browser berbasis Chromium** — tidak terbatas pada Chrome saja.
+
+| Browser | Status | Minimal Versi | Catatan |
+|---------|--------|---------------|---------|
+| ![Chrome](https://www.google.com/chrome/static/images/favicon.ico) **Google Chrome** | ✅ **Supported** | Chrome 88+ | Manifest V3 — fitur penuh |
+| ![Edge](https://edge.microsoft.com/favicon.ico) **Microsoft Edge** | ✅ **Supported** | Edge 88+ | Chromium-based — fitur penuh |
+| ![Brave](https://brave.com/static-assets/images/brave-favicon.png) **Brave** | ✅ **Supported** | Brave 1.0+ | Chromium-based — fitur penuh |
+| ![Opera](https://www.opera.com/favicon.ico) **Opera** | ✅ **Supported** | Opera 74+ | Via "Load unpacked" |
+| ![Vivaldi](https://vivaldi.com/favicon.ico) **Vivaldi** | ✅ **Supported** | Vivaldi 3.0+ | Chromium-based — fitur penuh |
+| ![Firefox](https://www.mozilla.org/media/img/favicons/firefox/favicon.ico) **Mozilla Firefox** | 🔄 **Coming Soon** | — | MV3 migration in progress |
+| ![Safari](https://developer.apple.com/favicon.ico) **Apple Safari** | 🔄 **Planned** | — | Safari Web Extensions on roadmap |
+
+> **Catatan:** Semua browser Chromium menggunakan codebase yang sama, sehingga TruthLayer berfungsi identik di Chrome, Edge, Brave, Opera, dan Vivaldi. Tidak ada perbedaan fitur antar browser.
+
+### 📊 Platform
+
+| Platform | Status | Catatan |
+|----------|--------|---------|
+| Windows 10/11 | ✅ **Supported** | Diuji pada Chrome, Edge, Brave |
+| macOS | ✅ **Supported** | Diuji pada Chrome, Edge |
+| Linux (Ubuntu, Fedora, Arch) | ✅ **Supported** | Diuji pada Chrome, Brave |
+| Android | 🔄 **Planned** | Kiwi Browser support in development |
+| iOS | 🔄 **Planned** | Safari Web Extensions on roadmap |
+
 ## Installation
 
-### 📦 Chrome Extension
+### 📦 Chrome & Chromium Extensions
 
 ```bash
 # Clone repository
 git clone https://github.com/wi5nuu/Truthlayer.git
 cd truthlayer
 
-# Load extension di Chrome:
-# 1. Buka chrome://extensions
+# Load extension di Chrome / Edge / Brave / Opera:
+# 1. Buka chrome://extensions (atau edge://extensions, brave://extensions, opera://extensions)
 # 2. Aktifkan "Developer mode" (pojok kanan atas)
 # 3. Klik "Load unpacked"
 # 4. Pilih folder extension/
+```
+
+### ⚡ Quick Install (Download ZIP)
+
+Tidak punya Git? Download ZIP langsung dari GitHub:
+
+```bash
+# Download: https://github.com/wi5nuu/Truthlayer/archive/refs/heads/main.zip
+# Extract ZIP ke folder lokal
+# Buka chrome://extensions → Developer mode → Load unpacked → pilih folder extension/
 ```
 
 ### ⚙️ Backend API
