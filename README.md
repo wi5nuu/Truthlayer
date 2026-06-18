@@ -245,6 +245,22 @@ docker-compose up --build
 
 > **⚠️ Catatan untuk Windows:** `next build` mungkin error EISDIR di Node.js 22+. Gunakan `npm run dev` untuk development, atau Docker untuk production build.
 
+> **⚠️ Catatan Backend:** Extension membutuhkan backend server yang berjalan di `localhost:3001`. Backend TIDAK di-host di cloud — setiap pengguna harus menjalankannya sendiri secara lokal. Lihat petunjuk di bagian [Backend API](#-backend-api). Versi cloud akan tersedia di rilis mendatang.
+
+### 🌐 Deploy Web ke Netlify
+
+```bash
+# 1. Push ke GitHub
+# 2. Di Netlify: New site → Import from GitHub → pilih repo
+# 3. Set:
+#    - Base directory: web/
+#    - Build command: npm run build
+#    - Publish directory: .next
+# 4. Deploy
+```
+
+Atau gunakan `netlify.toml` yang sudah disediakan di root project — Netlify akan membaca konfigurasi secara otomatis.
+
 ### 🔧 One-Command Setup
 
 ```bash

@@ -304,7 +304,7 @@ export default function DownloadPage() {
           {[
             { q: 'Can I install on multiple browsers?', a: 'Yes. Repeat the installation steps for each Chromium browser (Chrome, Edge, Brave, etc.). Your settings are stored independently per browser.' },
             { q: 'Will updates happen automatically?', a: 'Not yet. Since this is a developer preview loaded via "Load unpacked," you will need to pull the latest code from GitHub and reload the extension at chrome://extensions.' },
-            { q: 'Do I need a backend server?', a: 'The extension communicates with our backend API for analysis. Make sure the backend is running on localhost:3001, or configure a remote endpoint in extension settings.' },
+            { q: 'Do I need a backend server?', a: 'Yes. TruthLayer requires the backend server to run locally on your machine. After cloning the repo, open a terminal in the backend/ folder, run npm install && npm start, and keep it running while using the extension. The backend handles AI analysis and trust score calculation — it is not hosted remotely. This is a developer preview; a cloud-hosted version is planned for future release.' },
             { q: 'Is my data safe?', a: 'Yes. TruthLayer only sends structured metadata (page title, headings, tracker domains) to the API. Raw page content stays in your browser. No personal data is collected or stored.' },
           ].map((item, i) => (
             <div key={i} className="p-4 bg-dark-800/40 rounded-xl border border-dark-700">
