@@ -205,8 +205,8 @@ function useCountUp(target: number, duration = 1200, start = false) {
   return current;
 }
 
-function useInView(threshold = 0.15) {
-  const ref = useRef<HTMLDivElement>(null);
+function useInView<T extends HTMLElement = HTMLDivElement>(threshold = 0.15) {
+  const ref = useRef<T>(null);
   const [inView, setInView] = useState(false);
   useEffect(() => {
     const el = ref.current;
@@ -223,7 +223,7 @@ function useInView(threshold = 0.15) {
    ══════════════════════════════════════════════ */
 
 function ScoreCard({ site, delay }: { site: typeof demoSites[0]; delay: number }) {
-  const { ref, inView } = useInView();
+  const { ref, inView } = useInView<HTMLAnchorElement>();
   const count = useCountUp(site.score, 1000, inView);
   return (
     <a ref={ref} href={`/report/${site.domain}`}
