@@ -354,7 +354,7 @@ export default function LandingPage() {
           Realtime Trust Analysis Engine · v2.0
         </div>
 
-        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.08] tracking-tight mb-6 animate-fade-up">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold leading-[1.15] tracking-tight mb-6 animate-fade-up">
           Every website wants<br />
           <span className="gradient-text-hero">something from you</span>
         </h1>
@@ -366,7 +366,7 @@ export default function LandingPage() {
 
         <div className="flex flex-col sm:flex-row gap-3 justify-center items-center mb-10 animate-fade-up delay-300">
           <a href="/download" className="btn-primary w-full sm:w-auto px-8 py-3.5 rounded-xl font-bold text-base text-white glow-teal">
-            Add to Chrome — Free
+            Get Extension
           </a>
           <form onSubmit={handleSearch} className="flex w-full sm:w-auto gap-2">
             <input type="text" value={domain} onChange={(e) => setDomain(e.target.value)}
@@ -769,7 +769,7 @@ export default function LandingPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <a href="/download" className="btn-primary px-10 py-4 rounded-xl font-bold text-white text-sm glow-teal">
-              Add to Chrome — Free
+              Get Extension
             </a>
             <form onSubmit={handleSearch} className="flex gap-2">
               <input type="text" value={domain} onChange={(e) => setDomain(e.target.value)}
