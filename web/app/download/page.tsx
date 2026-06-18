@@ -219,6 +219,27 @@ export default function DownloadPage() {
       {/* Divider */}
       <div className="section-divider max-w-4xl mx-auto" />
 
+      {/* Screenshot Preview */}
+      <section className="px-6 pb-8 max-w-4xl mx-auto">
+        <div className="glass-card rounded-2xl p-6 sm:p-8 text-center border border-primary-600/20">
+          <h2 className="text-xl font-bold mb-3">What It Looks Like</h2>
+          <p className="text-dark-400 text-sm mb-6">
+            After installation, click the TruthLayer icon in your browser toolbar to analyze any website.
+          </p>
+          <div className="relative rounded-xl overflow-hidden border border-dark-600 shadow-2xl">
+            <img
+              src="/extentionchrome.png"
+              alt="TruthLayer extension icon in Chrome toolbar"
+              className="w-full h-auto"
+              style={{ maxHeight: '480px', objectFit: 'contain' }}
+            />
+          </div>
+          <p className="text-xs text-dark-500 mt-4">
+            TruthLayer icon pinned in the Chrome toolbar — ready to analyze
+          </p>
+        </div>
+      </section>
+
       {/* Installation Instructions */}
       <section id="instructions" className="px-6 py-16 max-w-3xl mx-auto">
         <div className="text-center mb-12">

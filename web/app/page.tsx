@@ -449,6 +449,19 @@ export default function LandingPage() {
               </div>
             ))}
           </div>
+
+          {/* Screenshot */}
+          <div className="mt-12 glass-card rounded-2xl p-4 sm:p-6 border border-primary-600/15">
+            <p className="text-xs text-dark-500 text-center mb-4">Preview — Extension icon in Chrome toolbar</p>
+            <div className="relative rounded-xl overflow-hidden border border-dark-600 shadow-2xl">
+              <img
+                src="/extentionchrome.png"
+                alt="TruthLayer extension icon in Chrome toolbar"
+                className="w-full h-auto"
+                style={{ maxHeight: '360px', objectFit: 'contain' }}
+              />
+            </div>
+          </div>
         </div>
       </section>
 
