@@ -92,7 +92,7 @@ export default function ReportPage() {
     <main className="min-h-screen gradient-bg">
       <nav className="flex items-center justify-between px-6 py-4 max-w-4xl mx-auto">
         <a href="/" className="flex items-center gap-2">
-          <div className="w-7 h-7 bg-primary-600 rounded flex items-center justify-center text-xs font-bold">TL</div>
+          <img src="/truthlayer.png" alt="TruthLayer" className="w-7 h-7 object-contain" />
           <span className="text-sm font-semibold">truthlayer.io</span>
         </a>
         <div className="flex items-center gap-4">

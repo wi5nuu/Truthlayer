@@ -140,9 +140,7 @@ export default function DownloadPage() {
       {/* Nav */}
       <nav className="flex items-center justify-between px-6 py-4 max-w-6xl mx-auto">
         <a href="/" className="flex items-center gap-2.5 no-underline">
-          <div className="relative w-8 h-8 flex-shrink-0 rounded-lg overflow-hidden glow-teal-sm">
-            <img src="/truthlayer.png" alt="TruthLayer" className="w-full h-full object-contain" />
-          </div>
+          <img src="/truthlayer.png" alt="TruthLayer" className="w-8 h-8 object-contain" />
           <span className="font-bold text-sm">truthlayer.io</span>
         </a>
         <div className="flex items-center gap-3">
@@ -321,6 +319,7 @@ export default function DownloadPage() {
           <p className="text-xs text-dark-500">TruthLayer &copy; {new Date().getFullYear()} — Open Source</p>
           <div className="flex items-center gap-4">
             <a href="/" className="text-xs text-dark-500 hover:text-primary-400 transition-colors">Home</a>
+            <a href="/docs" className="text-xs text-dark-500 hover:text-primary-400 transition-colors">Docs</a>
             <a href="/about" className="text-xs text-dark-500 hover:text-primary-400 transition-colors">About</a>
             <a href="/privacy" className="text-xs text-dark-500 hover:text-primary-400 transition-colors">Privacy</a>
             <a href={GITHUB_REPO} className="text-xs text-dark-500 hover:text-primary-400 transition-colors">GitHub</a>

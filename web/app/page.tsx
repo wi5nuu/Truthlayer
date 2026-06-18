@@ -179,7 +179,7 @@ const changelog = [
 
 const navLinks = [
   { label: 'Features', href: '#features' },
-  { label: 'How It Works', href: '#how-it-works' },
+  { label: 'Docs', href: '/docs' },
   { label: 'Browsers', href: '#browsers' },
   { label: 'Privacy', href: '#privacy' },
   { label: 'FAQ', href: '#faq' },
@@ -805,6 +805,7 @@ export default function LandingPage() {
 
             <div className="flex items-center gap-4">
               {[
+                { label: 'Docs', href: '/docs' },
                 { label: 'About', href: '/about' },
                 { label: 'Privacy', href: '/privacy' },
                 { label: 'GitHub', href: 'https://github.com/truthlayer' },
