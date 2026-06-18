@@ -9,3 +9,4 @@ redis_data/
 coverage/
 .cache/
 *.pem
+*.tsbuildinfo

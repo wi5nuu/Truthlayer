@@ -139,43 +139,7 @@ const faqs = [
   },
 ];
 
-const changelog = [
-  {
-    version: 'v2.0.0',
-    date: 'Juni 2026',
-    type: 'major',
-    changes: [
-      'Redesign UI total dengan tema teal profesional',
-      'Tambah AI Content Detection engine',
-      'Sistem caching yang lebih cerdas (24 jam TTL)',
-      'Refactor arsitektur backend ke microservice',
-      'Peningkatan akurasi trust score +15%',
-    ],
-  },
-  {
-    version: 'v1.5.0',
-    date: 'April 2026',
-    type: 'minor',
-    changes: [
-      'Tambah deteksi 8 jenis dark pattern baru',
-      'Realtime clock di popup',
-      'Perbaikan false positive pada e-commerce',
-      'Optimasi performa analisis 2x lebih cepat',
-    ],
-  },
-  {
-    version: 'v1.0.0',
-    date: 'Januari 2026',
-    type: 'major',
-    changes: [
-      'Peluncuran perdana TruthLayer',
-      'Trust score 0–100 berbasis AI',
-      'Hidden intent detection dasar',
-      'Deteksi 12 dark pattern',
-      'Integrasi Chrome Web Store',
-    ],
-  },
-];
+
 
 const navLinks = [
   { label: 'Features', href: '#features' },
@@ -351,7 +315,7 @@ export default function LandingPage() {
       <section className="pt-32 pb-20 px-5 md:px-8 max-w-5xl mx-auto text-center">
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-dark-800/70 border border-primary-600/30 text-xs text-primary-400 font-semibold mb-8 animate-fade-in">
           <span className="w-1.5 h-1.5 rounded-full bg-primary-400 animate-blink" />
-          Realtime Trust Analysis Engine · v2.0
+          Realtime Trust Analysis Engine
         </div>
 
         <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold leading-[1.15] tracking-tight mb-6 animate-fade-up">
@@ -455,7 +419,7 @@ export default function LandingPage() {
             <p className="text-xs text-dark-500 text-center mb-4">Preview — Extension icon in Chrome toolbar</p>
             <div className="relative rounded-xl overflow-hidden border border-dark-600 shadow-2xl">
               <img
-                src="/extentionchrome.png"
+                src="/extension-chrome.png"
                 alt="TruthLayer extension icon in Chrome toolbar"
                 className="w-full h-auto"
                 style={{ maxHeight: '360px', objectFit: 'contain' }}
@@ -708,52 +672,6 @@ export default function LandingPage() {
       </section>
 
       <div className="section-divider mx-8" />
-
-      {/* ══════ CHANGELOG ══════ */}
-      <section id="changelog" className="py-24 px-5 md:px-8">
-        <div className="max-w-3xl mx-auto">
-          <div className="text-center mb-16">
-            <p className="text-primary-400 text-xs font-bold tracking-widest uppercase mb-3">Release Notes</p>
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">Changelog</h2>
-            <p className="text-dark-400 text-sm">Riwayat lengkap pembaruan dan perbaikan TruthLayer.</p>
-          </div>
-
-          <div className="flex flex-col gap-6">
-            {changelog.map((release, i) => (
-              <div key={i} className="glass-card rounded-2xl overflow-hidden">
-                {/* Header */}
-                <div className="flex items-center gap-3 px-6 py-4 border-b border-dark-700/50">
-                  <span className={`px-2.5 py-0.5 rounded-full text-xs font-black ${
-                    release.type === 'major'
-                      ? 'bg-primary-600/20 text-primary-400 border border-primary-600/30'
-                      : 'bg-dark-700 text-dark-400 border border-dark-600'
-                  }`}>
-                    {release.version}
-                  </span>
-                  {release.type === 'major' && (
-                    <span className="text-xs px-2 py-0.5 rounded-full bg-primary-600 text-white font-semibold">
-                      Major Release
-                    </span>
-                  )}
-                  <span className="text-xs text-dark-500 ml-auto">{release.date}</span>
-                </div>
-                {/* Changes */}
-                <ul className="px-6 py-4 flex flex-col gap-2.5">
-                  {release.changes.map((change, j) => (
-                    <li key={j} className="flex items-start gap-3 text-sm text-dark-300">
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"
-                        className="text-primary-500 flex-shrink-0 mt-0.5">
-                        <polyline points="20 6 9 17 4 12" />
-                      </svg>
-                      {change}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       <div className="section-divider mx-8" />
 

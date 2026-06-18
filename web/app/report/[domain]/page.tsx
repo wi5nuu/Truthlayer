@@ -89,32 +89,34 @@ export default function ReportPage() {
   }
 
   return (
-    <main className="min-h-screen gradient-bg">
-      <nav className="flex items-center justify-between px-6 py-4 max-w-4xl mx-auto">
-        <a href="/" className="flex items-center gap-2">
+    <main className="min-h-screen gradient-bg flex flex-col">
+      <nav className="flex items-center justify-between px-4 sm:px-6 py-4 max-w-5xl mx-auto w-full">
+        <a href="/" className="flex items-center gap-2 shrink-0">
           <img src="/truthlayer.png" alt="TruthLayer" className="w-7 h-7 object-contain" />
           <span className="text-sm font-semibold">truthlayer.io</span>
         </a>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
           <form onSubmit={handleSearch} className="hidden sm:flex gap-2">
             <input
               type="text"
               value={searchDomain}
               onChange={(e) => setSearchDomain(e.target.value)}
               placeholder="Check another website..."
-              className="px-3 py-1.5 bg-dark-800 border border-dark-700 rounded-lg text-sm text-dark-100 placeholder-dark-500 focus:outline-none focus:border-primary-500 w-48"
+              className="px-3 py-1.5 bg-dark-800 border border-dark-700 rounded-lg text-sm text-dark-100 placeholder-dark-500 focus:outline-none focus:border-primary-500 w-44"
             />
-            <button type="submit" className="px-3 py-1.5 bg-primary-600 hover:bg-primary-700 rounded-lg text-sm transition-colors">
+            <button type="submit" className="px-3 py-1.5 bg-primary-600 hover:bg-primary-700 rounded-lg text-sm font-medium transition-colors">
               Go
             </button>
           </form>
-          <a href="/download" className="text-sm px-3 py-1.5 bg-dark-700 hover:bg-dark-600 rounded-lg transition-colors">
+          <a href="/download" className="text-sm px-3 py-1.5 bg-dark-700 hover:bg-dark-600 rounded-lg font-medium transition-colors">
             Get Extension
           </a>
         </div>
       </nav>
-      {data && <SiteReport data={data} />}
-      <footer className="px-6 py-8 text-center text-sm text-dark-500 border-t border-dark-800 mt-12">
+      <div className="flex-1">
+        {data && <SiteReport data={data} />}
+      </div>
+      <footer className="px-4 sm:px-6 py-6 text-center text-xs text-dark-500 border-t border-dark-800 max-w-5xl mx-auto w-full">
         TruthLayer &copy; {new Date().getFullYear()}
       </footer>
     </main>

@@ -74,6 +74,19 @@ function Gauge({ value, max, label, color }: { value: number; max: number; label
   );
 }
 
+function darkPatternEvidence(dp: { type: string; description: string; severity: string }): string {
+  const evidenceMap: Record<string, string> = {
+    urgency: `Found on page elements (e.g., "${dp.description.split('"')[1] || 'countdown timers, limited stock claims'}"). These pressure users into quick decisions.`,
+    social_proof: `Page includes "${dp.description.split('"')[1] || 'social proof indicators'}". This creates false urgency by simulating demand.`,
+    confirmshaming: `Opt-out options use guilt-tripping language to emotionally manipulate users into agreeing. Found in forms or newsletter signups.`,
+    privacy_zuckering: `Data collection or cookie practices are obfuscated, making it hard for users to understand what they consent to.`,
+    misdirection: `Pop-ups and overlays distract from the primary content, increasing chance of accidental clicks.`,
+    hidden_costs: `Costs or fees are only revealed late in the user journey (e.g., at checkout). Found via "${dp.description.split('"')[1] || 'keyword signals'}".`,
+    disguised_ads: `Promotional content is styled to look like genuine editorial content, misleading users about its nature.`,
+  };
+  return evidenceMap[dp.type] || `Pattern detected via page analysis: ${dp.description}`;
+}
+
 function SeverityBadge({ level }: { level: string }) {
   const config: Record<string, { color: string; bg: string; border: string }> = {
     low: { color: 'text-emerald-400', bg: 'bg-emerald-900/20', border: 'border-emerald-700/30' },
@@ -89,14 +102,11 @@ function SeverityBadge({ level }: { level: string }) {
   );
 }
 
-function SectionCard({ title, icon, children, badge }: { title: string; icon?: string; children: React.ReactNode; badge?: React.ReactNode }) {
+function SectionCard({ title, children, badge }: { title: string; children: React.ReactNode; badge?: React.ReactNode }) {
   return (
     <div className="bg-dark-800/60 border border-dark-700 rounded-xl overflow-hidden">
       <div className="flex items-center justify-between px-5 py-3 border-b border-dark-700 bg-dark-800/80">
-        <div className="flex items-center gap-2">
-          {icon && <span className="text-sm">{icon}</span>}
-          <h3 className="text-xs font-semibold uppercase tracking-wider text-dark-300">{title}</h3>
-        </div>
+        <h3 className="text-xs font-semibold uppercase tracking-wider text-dark-300">{title}</h3>
         {badge}
       </div>
       <div className="p-5">
@@ -159,9 +169,9 @@ export default function SiteReport({ data }: SiteReportProps) {
   const allRecs = recs.length > 0 ? recs : defaultRecs;
 
   const tabs = [
-    { id: 'overview', label: 'Overview', icon: '📊' },
-    { id: 'data', label: 'Data & Tracking', icon: '🔍' },
-    { id: 'technical', label: 'Technical', icon: '⚙️' },
+    { id: 'overview', label: 'Overview' },
+    { id: 'data', label: 'Data & Tracking' },
+    { id: 'technical', label: 'Technical' },
   ];
 
   return (
@@ -241,7 +251,6 @@ export default function SiteReport({ data }: SiteReportProps) {
                 : 'text-dark-400 hover:text-dark-200 hover:bg-dark-700'
             }`}
           >
-            <span className="mr-1.5">{tab.icon}</span>
             {tab.label}
           </button>
         ))}
@@ -255,7 +264,7 @@ export default function SiteReport({ data }: SiteReportProps) {
 
           {/* Hidden Intents */}
           {data.intents && data.intents.length > 0 && (
-            <SectionCard title="Hidden Intent Analysis" icon="🎯" badge={<span className="text-[10px] text-dark-400">{data.intents.length} detected</span>}>
+            <SectionCard title="Hidden Intent Analysis" badge={<span className="text-[10px] text-dark-400">{data.intents.length} detected</span>}>
               <div className="space-y-4">
                 <p className="text-xs text-dark-400 leading-relaxed">
                   TruthLayer analyzed the page content and classified the website's intent into primary, secondary, and tertiary categories.
@@ -273,7 +282,7 @@ export default function SiteReport({ data }: SiteReportProps) {
           )}
 
           {/* Trust Score Breakdown */}
-          <SectionCard title="Trust Score Breakdown" icon="🛡️" badge={<span className="text-sm font-bold" style={{ color: scoreColor }}>{data.trustScore}/100</span>}>
+          <SectionCard title="Trust Score Breakdown" badge={<span className="text-sm font-bold" style={{ color: scoreColor }}>{data.trustScore}/100</span>}>
             <div className="space-y-5">
               <p className="text-xs text-dark-400 leading-relaxed">
                 The trust score is calculated from multiple weighted factors: dark pattern presence, data collection practices,
@@ -288,21 +297,116 @@ export default function SiteReport({ data }: SiteReportProps) {
             </div>
           </SectionCard>
 
+          {/* Score Interpretation */}
+          <SectionCard title="What This Score Means">
+            <div className="space-y-4">
+              <p className="text-xs text-dark-400 leading-relaxed">
+                Trust scores are categorized into five levels. Each level indicates the level of risk and transparency of the website.
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {[
+                  { range: '80–100', label: 'Highly Trustworthy', color: '#059669', bg: 'bg-emerald-900/20', border: 'border-emerald-700/30', meaning: 'Very low risk. Website is transparent, minimal dark patterns, clear privacy practices. Safe for browsing, shopping, and sharing data.' },
+                  { range: '60–79', label: 'Generally Trustworthy', color: '#10B981', bg: 'bg-emerald-900/10', border: 'border-emerald-700/20', meaning: 'Low risk overall. Some minor concerns detected but website is largely safe. Exercise normal caution with sensitive information.' },
+                  { range: '40–59', label: 'Use With Caution', color: '#D97706', bg: 'bg-yellow-900/20', border: 'border-yellow-700/30', meaning: 'Moderate risk. Multiple dark patterns or data collection practices detected. Avoid sharing sensitive data. Verify information before trusting.' },
+                  { range: '20–39', label: 'Potentially Manipulative', color: '#F97316', bg: 'bg-orange-900/20', border: 'border-orange-700/30', meaning: 'High risk. Strong evidence of manipulation tactics, excessive tracking, or deceptive design. Do not enter personal or financial information.' },
+                  { range: '0–19', label: 'High Risk', color: '#DC2626', bg: 'bg-red-900/20', border: 'border-red-700/30', meaning: 'Extreme risk. This website exhibits dangerous patterns. Leave immediately. Do not interact with forms or provide any data.' },
+                ].map((level, i) => {
+                  const isCurrent = data.trustScore >= (parseInt(level.range) === 80 ? 80 : parseInt(level.range.split('–')[0])) && data.trustScore <= parseInt(level.range.split('–')[1] || level.range.split('–')[0]);
+                  return (
+                    <div key={i} className={`p-3 rounded-xl border text-sm ${isCurrent ? `${level.bg} ${level.border}` : 'bg-dark-900/30 border-dark-700/30 opacity-40'}`}>
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="w-2 h-2 rounded-full inline-block shrink-0" style={{ background: level.color }}></span>
+                        <span className="text-xs font-mono text-dark-500">{level.range}</span>
+                        <span className="text-xs font-bold px-1.5 py-0.5 rounded" style={{ background: level.color + '20', color: level.color }}>{level.label}</span>
+                        {isCurrent && <span className="text-[9px] px-1.5 py-0.5 bg-primary-600/20 text-primary-400 rounded-full border border-primary-600/30">← Current</span>}
+                      </div>
+                      <p className="text-xs text-dark-400 mt-1 leading-relaxed">{level.meaning}</p>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </SectionCard>
+
+          {/* Factor Evidence */}
+          <SectionCard title="Why This Score?">
+            <div className="space-y-4">
+              <p className="text-xs text-dark-400 leading-relaxed">
+                Each trust score component is calculated based on specific observations. Here is the evidence behind each factor:
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className={`p-3 rounded-xl border text-sm ${data.darkPatterns?.count > 0 ? 'bg-red-900/10 border-red-700/20' : 'bg-emerald-900/10 border-emerald-700/20'}`}>
+                  <div className="flex items-center gap-2 mb-1.5">
+                    <span className={`text-xs px-1.5 py-0.5 rounded font-bold ${data.darkPatterns?.count > 0 ? 'bg-red-900/30 text-red-400' : 'bg-emerald-900/30 text-emerald-400'}`}>
+                      {data.darkPatterns?.count || 0} dark patterns
+                    </span>
+                    <span className="text-[10px] text-dark-500">{data.darkPatterns?.count > 0 ? 'Penalty applied' : 'No penalty'}</span>
+                  </div>
+                  <p className="text-xs text-dark-400 leading-relaxed">
+                    {data.darkPatterns?.count > 0
+                      ? `${data.darkPatterns.detected.map(d => d.type.replace(/_/g, ' ')).join(', ')}. This lowers the trust score significantly.`
+                      : 'No dark patterns detected. The interface appears honest and transparent.'}
+                  </p>
+                </div>
+                <div className={`p-3 rounded-xl border text-sm ${(data.dataCollection?.percentage || 0) > 20 ? 'bg-orange-900/10 border-orange-700/20' : 'bg-emerald-900/10 border-emerald-700/20'}`}>
+                  <div className="flex items-center gap-2 mb-1.5">
+                    <span className={`text-xs px-1.5 py-0.5 rounded font-bold ${(data.dataCollection?.percentage || 0) > 20 ? 'bg-orange-900/30 text-orange-400' : 'bg-emerald-900/30 text-emerald-400'}`}>
+                      {data.dataCollection?.percentage || 0}% data exposure
+                    </span>
+                    <span className="text-[10px] text-dark-500">{(data.dataCollection?.cookies?.thirdParty || 0) > 0 ? `${data.dataCollection?.cookies?.thirdParty || 0} third-party cookies` : 'No third-party cookies'}</span>
+                  </div>
+                  <p className="text-xs text-dark-400 leading-relaxed">
+                    {(data.dataCollection?.percentage || 0) > 20
+                      ? `Collects ${data.dataCollection?.dataTypes?.join(', ') || 'various data types'}. ${trackerCount > 0 ? trackerCount + ' tracker(s) detected.' : ''}`
+                      : 'Minimal data collection. No excessive tracking detected.'}
+                  </p>
+                </div>
+                <div className={`p-3 rounded-xl border text-sm ${(data.aiContent?.percentage || 0) > 20 ? 'bg-yellow-900/10 border-yellow-700/20' : 'bg-emerald-900/10 border-emerald-700/20'}`}>
+                  <div className="flex items-center gap-2 mb-1.5">
+                    <span className={`text-xs px-1.5 py-0.5 rounded font-bold ${(data.aiContent?.percentage || 0) > 20 ? 'bg-yellow-900/30 text-yellow-400' : 'bg-emerald-900/30 text-emerald-400'}`}>
+                      {data.aiContent?.percentage || 0}% AI content
+                    </span>
+                    <span className="text-[10px] text-dark-500">{data.aiContent?.confidence ? `${Math.round(data.aiContent.confidence * 100)}% confidence` : ''}</span>
+                  </div>
+                  <p className="text-xs text-dark-400 leading-relaxed">
+                    {(data.aiContent?.percentage || 0) > 20
+                      ? 'Significant AI-generated content detected. Accuracy of claims may be reduced.'
+                      : 'Content appears primarily human-written. Factual reliability is higher.'}
+                  </p>
+                </div>
+                <div className={`p-3 rounded-xl border text-sm ${data.intents && data.intents.length > 1 && data.intents.filter(i => i.intent !== data.primaryIntent).length > 0 ? 'bg-yellow-900/10 border-yellow-700/20' : 'bg-emerald-900/10 border-emerald-700/20'}`}>
+                  <div className="flex items-center gap-2 mb-1.5">
+                    <span className={`text-xs px-1.5 py-0.5 rounded font-bold ${data.intents && data.intents.length > 1 && data.intents.filter(i => i.intent !== data.primaryIntent).length > 0 ? 'bg-yellow-900/30 text-yellow-400' : 'bg-emerald-900/30 text-emerald-400'}`}>
+                      {data.intents?.length || 0} intent{data.intents?.length !== 1 ? 's' : ''}
+                    </span>
+                    <span className="text-[10px] text-dark-500">{data.manipulationLevel} manipulation</span>
+                  </div>
+                  <p className="text-xs text-dark-400 leading-relaxed">
+                    {data.intents && data.intents.length > 0
+                      ? `Primary intent: ${data.primaryIntent || data.intents[0].intent}. ${data.intents.length > 1 ? 'Hidden secondary agendas detected.' : 'Intents appear aligned and transparent.'}`
+                      : 'No hidden intents detected.'}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </SectionCard>
+
           {/* Dark Patterns */}
           {data.darkPatterns && data.darkPatterns.count > 0 && (
-            <SectionCard title="Dark Pattern Detection" icon="⚠️" badge={<SeverityBadge level={data.manipulationLevel} />}>
+            <SectionCard title="Dark Pattern Detection" badge={<SeverityBadge level={data.manipulationLevel} />}>
               <div className="space-y-3">
                 <p className="text-xs text-dark-400 leading-relaxed">
                   Dark patterns are manipulative design techniques that trick users into actions they didn't intend.
                   We detected {data.darkPatterns.count} pattern{data.darkPatterns.count > 1 ? 's' : ''} on this website.
                 </p>
                 <Table
-                  headers={['#', 'Pattern Type', 'Description', 'Severity']}
+                  headers={['#', 'Pattern Type', 'Description', 'Severity', 'Evidence']}
                   rows={data.darkPatterns.detected.map((dp, i) => [
                     <span key={`n-${i}`} className="text-dark-500 font-mono text-[10px]">{(i + 1).toString().padStart(2, '0')}</span>,
                     <span key={`t-${i}`} className="font-medium capitalize">{dp.type.replace(/_/g, ' ')}</span>,
                     <span key={`d-${i}`} className="text-dark-400 text-xs">{dp.description}</span>,
                     <SeverityBadge key={`s-${i}`} level={dp.severity} />,
+                    <span key={`e-${i}`} className="text-[10px] text-dark-500 max-w-48 block leading-relaxed">{darkPatternEvidence(dp)}</span>,
                   ])}
                 />
                 {data.darkPatterns.detected.length > 0 && (
@@ -318,7 +422,7 @@ export default function SiteReport({ data }: SiteReportProps) {
 
           {/* AI Content Analysis */}
           {data.aiContent && (
-            <SectionCard title="AI Content Analysis" icon="🤖" badge={<span className="text-sm font-bold text-yellow-400">{data.aiContent.percentage}%</span>}>
+            <SectionCard title="AI Content Analysis" badge={<span className="text-sm font-bold text-yellow-400">{data.aiContent.percentage}%</span>}>
               <div className="space-y-4">
                 <p className="text-xs text-dark-400 leading-relaxed">
                   We estimate that <strong className="text-dark-200">{data.aiContent.percentage}%</strong> of this page's content was generated by artificial intelligence.
@@ -339,10 +443,10 @@ export default function SiteReport({ data }: SiteReportProps) {
                   </div>
                   <div className="flex-1">
                     <p className="text-xs text-dark-400 mb-2">
-                      {data.aiContent.percentage <= 10 ? '✅ This website appears to use mostly human-written content.' :
-                       data.aiContent.percentage <= 30 ? 'ℹ️ Some sections may be AI-generated. Verify critical information.' :
-                       data.aiContent.percentage <= 50 ? '⚠️ A significant portion of content appears AI-generated. Cross-check facts.' :
-                       '🔴 Most content appears AI-generated. Exercise caution with factual claims.'}
+                      {data.aiContent.percentage <= 10 ? 'This website appears to use mostly human-written content.' :
+                       data.aiContent.percentage <= 30 ? 'Some sections may be AI-generated. Verify critical information.' :
+                       data.aiContent.percentage <= 50 ? 'A significant portion of content appears AI-generated. Cross-check facts.' :
+                       'Most content appears AI-generated. Exercise caution with factual claims.'}
                     </p>
                     {data.aiContent.confidence && (
                       <div className="flex items-center gap-2">
@@ -367,15 +471,76 @@ export default function SiteReport({ data }: SiteReportProps) {
           )}
 
           {/* Recommendations */}
-          <SectionCard title="Recommendations" icon="💡">
-            <ul className="space-y-2">
-              {allRecs.map((rec, i) => (
-                <li key={i} className="flex items-start gap-2 text-sm text-dark-300">
-                  <span className="text-primary-400 mt-0.5 flex-shrink-0">•</span>
-                  {rec}
-                </li>
-              ))}
-            </ul>
+          <SectionCard title="Recommendations & Action Guide">
+            <div className="space-y-4">
+              <p className="text-xs text-dark-400 leading-relaxed">
+                Based on the analysis, here are specific actions you should take:
+              </p>
+
+              {/* Score-based actions */}
+              <div className="p-3 rounded-xl border text-sm" style={{ borderColor: scoreColor + '30', background: scoreColor + '08' }}>
+                <div className="flex items-center gap-3 mb-1">
+                  <span className="w-2 h-2 rounded-full shrink-0" style={{ background: scoreColor }}></span>
+                  <span className="text-xs font-bold" style={{ color: scoreColor }}>
+                    {data.trustScore >= 80 ? 'Safe to Use' :
+                     data.trustScore >= 60 ? 'Proceed with Caution' :
+                     data.trustScore >= 40 ? 'Be Careful' :
+                     data.trustScore >= 20 ? 'High Risk' : 'Do Not Trust'}
+                  </span>
+                  <span className="text-[10px] text-dark-500 ml-auto">
+                    {data.trustScore >= 80 ? 'Standard precautions apply' :
+                     data.trustScore >= 60 ? 'Check privacy policy before engaging' :
+                     data.trustScore >= 40 ? 'Avoid sharing personal data' :
+                     data.trustScore >= 20 ? 'Do not enter sensitive information' :
+                     'Leave this website immediately'}
+                  </span>
+                </div>
+              </div>
+
+              {/* Detailed recommendations */}
+              <ul className="space-y-2">
+                {allRecs.map((rec, i) => (
+                  <li key={i} className="flex items-start gap-2 text-sm text-dark-300">
+                    <span className="text-primary-400 mt-0.5 flex-shrink-0">•</span>
+                    {rec}
+                  </li>
+                ))}
+              </ul>
+
+              {/* Contextual tips based on specific issues */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {data.darkPatterns?.count > 0 && (
+                  <div className="p-2.5 rounded-lg bg-red-900/10 border border-red-800/20">
+                    <p className="text-[10px] font-semibold text-red-400 uppercase tracking-wider mb-0.5">Dark Patterns Detected</p>
+                    <p className="text-[11px] text-dark-400 leading-relaxed">Read carefully before clicking buttons or accepting offers. Look for pre-checked boxes and hidden fees.</p>
+                  </div>
+                )}
+                {(data.dataCollection?.percentage || 0) > 30 && (
+                  <div className="p-2.5 rounded-lg bg-orange-900/10 border border-orange-800/20">
+                    <p className="text-[10px] font-semibold text-orange-400 uppercase tracking-wider mb-0.5">Excessive Tracking</p>
+                    <p className="text-[11px] text-dark-400 leading-relaxed">Use a privacy-focused browser or blocker. Consider using disposable email and temporary accounts.</p>
+                  </div>
+                )}
+                {(data.aiContent?.percentage || 0) > 30 && (
+                  <div className="p-2.5 rounded-lg bg-yellow-900/10 border border-yellow-800/20">
+                    <p className="text-[10px] font-semibold text-yellow-400 uppercase tracking-wider mb-0.5">AI-Generated Content</p>
+                    <p className="text-[11px] text-dark-400 leading-relaxed">Cross-check important facts with independent sources. Be skeptical of testimonials and statistics.</p>
+                  </div>
+                )}
+                {data.intents && data.intents.length > 1 && (
+                  <div className="p-2.5 rounded-lg bg-yellow-900/10 border border-yellow-800/20">
+                    <p className="text-[10px] font-semibold text-yellow-400 uppercase tracking-wider mb-0.5">Hidden Agendas</p>
+                    <p className="text-[11px] text-dark-400 leading-relaxed">The site may be distracting from its real purpose. Verify claims with external sources before acting.</p>
+                  </div>
+                )}
+                {data.trustScore >= 80 && (
+                  <div className="p-2.5 rounded-lg bg-emerald-900/10 border border-emerald-800/20">
+                    <p className="text-[10px] font-semibold text-emerald-400 uppercase tracking-wider mb-0.5">Low Risk Verified</p>
+                    <p className="text-[11px] text-dark-400 leading-relaxed">No significant concerns. Standard internet safety practices still recommended.</p>
+                  </div>
+                )}
+              </div>
+            </div>
           </SectionCard>
 
         </div>
@@ -388,7 +553,7 @@ export default function SiteReport({ data }: SiteReportProps) {
         <div className="space-y-6">
 
           {/* Data Collection Overview */}
-          <SectionCard title="Data Collection Overview" icon="🔍" badge={<span className={`text-sm font-bold ${data.dataCollection?.percentage > 50 ? 'text-red-400' : data.dataCollection?.percentage > 20 ? 'text-yellow-400' : 'text-emerald-400'}`}>{data.dataCollection?.percentage || 0}%</span>}>
+          <SectionCard title="Data Collection Overview" badge={<span className={`text-sm font-bold ${data.dataCollection?.percentage > 50 ? 'text-red-400' : data.dataCollection?.percentage > 20 ? 'text-yellow-400' : 'text-emerald-400'}`}>{data.dataCollection?.percentage || 0}%</span>}>
             <div className="space-y-4">
               <p className="text-xs text-dark-400 leading-relaxed">
                 This website engages in data collection practices. Below is a breakdown of what data is being collected and how it's being tracked.
@@ -416,7 +581,7 @@ export default function SiteReport({ data }: SiteReportProps) {
 
           {/* Trackers */}
           {data.dataCollection?.trackers && data.dataCollection.trackers.length > 0 && (
-            <SectionCard title="Trackers Detected" icon="📡" badge={<span className="text-[10px] text-dark-400">{trackerCount} found</span>}>
+            <SectionCard title="Trackers Detected" badge={<span className="text-[10px] text-dark-400">{trackerCount} found</span>}>
               <div className="flex flex-wrap gap-2">
                 {data.dataCollection.trackers.map((t, i) => (
                   <span key={i} className="px-2.5 py-1 text-xs bg-dark-900/50 border border-dark-700 rounded-full text-dark-300 font-mono">
@@ -429,7 +594,7 @@ export default function SiteReport({ data }: SiteReportProps) {
 
           {/* Data Types */}
           {data.dataCollection?.dataTypes && data.dataCollection.dataTypes.length > 0 && (
-            <SectionCard title="Data Types Collected" icon="📋">
+            <SectionCard title="Data Types Collected">
               <Table
                 headers={['#', 'Data Type', 'Risk Level']}
                 rows={data.dataCollection.dataTypes.map((dt, i) => {
@@ -450,7 +615,7 @@ export default function SiteReport({ data }: SiteReportProps) {
 
           {/* Network Requests */}
           {data.dataCollection?.requests && data.dataCollection.requests.length > 0 && (
-            <SectionCard title="Network Requests" icon="🌐" badge={<span className="text-[10px] text-dark-400">{data.dataCollection.requests.length} requests</span>}>
+            <SectionCard title="Network Requests" badge={<span className="text-[10px] text-dark-400">{data.dataCollection.requests.length} requests</span>}>
               <Table
                 headers={['#', 'URL', 'Type']}
                 rows={data.dataCollection.requests.slice(0, 20).map((req, i) => [
@@ -475,13 +640,11 @@ export default function SiteReport({ data }: SiteReportProps) {
         <div className="space-y-6">
 
           {/* Security Info */}
-          <SectionCard title="Security & SSL" icon="🔒">
+          <SectionCard title="Security & SSL">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="flex items-center gap-3 p-3 bg-dark-900/50 rounded-lg border border-dark-700/50">
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center ${data.security?.https ? 'bg-emerald-900/30' : 'bg-red-900/30'}`}>
-                  <span className={`text-sm ${data.security?.https ? 'text-emerald-400' : 'text-red-400'}`}>
-                    {data.security?.https ? '🔒' : '🔓'}
-                  </span>
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-[10px] font-bold uppercase ${data.security?.https ? 'bg-emerald-900/30 text-emerald-400' : 'bg-red-900/30 text-red-400'}`}>
+                  {data.security?.https ? 'ON' : 'OFF'}
                 </div>
                 <div>
                   <p className="text-sm font-medium text-dark-200">HTTPS</p>
@@ -489,10 +652,8 @@ export default function SiteReport({ data }: SiteReportProps) {
                 </div>
               </div>
               <div className="flex items-center gap-3 p-3 bg-dark-900/50 rounded-lg border border-dark-700/50">
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center ${data.security?.ssl_valid ? 'bg-emerald-900/30' : 'bg-red-900/30'}`}>
-                  <span className={`text-sm ${data.security?.ssl_valid ? 'text-emerald-400' : 'text-red-400'}`}>
-                    {data.security?.ssl_valid ? '✅' : '❌'}
-                  </span>
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-[10px] font-bold uppercase ${data.security?.ssl_valid ? 'bg-emerald-900/30 text-emerald-400' : 'bg-red-900/30 text-red-400'}`}>
+                  {data.security?.ssl_valid ? 'OK' : 'NO'}
                 </div>
                 <div>
                   <p className="text-sm font-medium text-dark-200">SSL Certificate</p>
@@ -504,7 +665,7 @@ export default function SiteReport({ data }: SiteReportProps) {
 
           {/* HTTP Headers */}
           {data.security?.headers && Object.keys(data.security.headers).length > 0 && (
-            <SectionCard title="HTTP Headers" icon="📨">
+            <SectionCard title="HTTP Headers">
               <Table
                 headers={['Header', 'Value']}
                 rows={Object.entries(data.security.headers).map(([key, val], i) => [
@@ -516,7 +677,7 @@ export default function SiteReport({ data }: SiteReportProps) {
           )}
 
           {/* Domain Info */}
-          <SectionCard title="Domain Information" icon="ℹ️">
+          <SectionCard title="Domain Information">
             <Table
               headers={['Property', 'Value']}
               rows={[
@@ -532,7 +693,7 @@ export default function SiteReport({ data }: SiteReportProps) {
 
           {/* Raw Analysis Metadata */}
           {data.intents && data.intents.length > 0 && (
-            <SectionCard title="Analysis Methodology" icon="🔬">
+            <SectionCard title="Analysis Methodology">
               <div className="text-xs text-dark-400 leading-relaxed space-y-2">
                 <p>TruthLayer uses a multi-layered analysis pipeline:</p>
                 <ol className="list-decimal list-inside space-y-1 text-dark-400">
@@ -554,7 +715,7 @@ export default function SiteReport({ data }: SiteReportProps) {
           <div className="flex items-center gap-3">
             <span className="text-xs text-dark-500 mr-1">Share this report:</span>
             <button onClick={shareTwitter} className="px-3 py-1.5 text-xs bg-dark-700 hover:bg-dark-600 rounded-lg text-dark-300 transition-colors border border-dark-600 hover:border-dark-500">
-              𝕏 Twitter
+              Twitter
             </button>
             <button onClick={shareWhatsApp} className="px-3 py-1.5 text-xs bg-dark-700 hover:bg-dark-600 rounded-lg text-dark-300 transition-colors border border-dark-600 hover:border-dark-500">
               WhatsApp
