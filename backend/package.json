@@ -6,7 +6,9 @@
   "scripts": {
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
-    "test": "jest --coverage"
+    "test": "jest --coverage --testPathIgnorePatterns=integration",
+    "test:integration": "jest --coverage tests/integration.test.js",
+    "test:all": "jest --coverage"
   },
   "dependencies": {
     "express": "^4.18.2",
