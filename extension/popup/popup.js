@@ -3,6 +3,19 @@ const API_TIMEOUT  = 10000;
 const CACHE_TTL    = 24 * 60 * 60 * 1000;
 const RETRY_DELAY  = 2000;
 
+function friendlyError(cause) {
+  if (!navigator.onLine) return 'Tidak ada koneksi internet. Periksa jaringan Anda.';
+  if (cause?.message?.includes('Failed to fetch') || cause?.message?.includes('NetworkError') || cause?.name === 'TypeError') {
+    return 'Server backend tidak terhubung. Pastikan server sudah dijalankan (cd backend && npm start).';
+  }
+  if (cause?.message?.includes('aborted')) return 'Analisis timeout. Server terlalu lambat.';
+  if (cause?.status === 400) return 'Data halaman tidak valid. Coba refresh halaman.';
+  if (cause?.status === 401) return 'Autentikasi gagal. Periksa token API.';
+  if (cause?.status === 429) return 'Terlalu banyak permintaan. Tunggu beberapa saat.';
+  if (cause?.status >= 500) return 'Server error. Coba lagi nanti.';
+  return 'Analisis gagal. Coba lagi nanti.';
+}
+
 /* ================================
    INIT
    ================================ */
@@ -30,11 +43,11 @@ document.addEventListener('DOMContentLoaded', async () => {
       setTimeout(async () => {
         const retryResult = await loadAnalysis(domain);
         if (retryResult) renderResults(retryResult);
-        else renderError('Analisis gagal. Coba lagi nanti.');
+        else renderError(friendlyError({ message: 'Retry failed' }));
       }, RETRY_DELAY);
     }
   } catch (err) {
-    renderError('Gagal menganalisis halaman ini');
+    renderError(friendlyError(err));
   }
 
   // Button listeners
@@ -52,8 +65,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   document.getElementById('settingsBtn').addEventListener('click', () => {
     if (chrome.runtime.openOptionsPage) chrome.runtime.openOptionsPage();
-    else renderError('Halaman pengaturan tidak tersedia');
+    else renderError(friendlyError({ message: 'Halaman pengaturan tidak tersedia' }));
   });
+
 });
 
 /* ================================
@@ -92,31 +106,28 @@ async function loadAnalysis(domain) {
   const cached = await getCachedResult(domain);
   if (cached) return cached;
 
-  try {
-    const tab = await getCurrentTab();
-    if (!tab) return null;
-    const pageData = await requestPageData(tab.id);
-    if (!pageData) return null;
+  const tab = await getCurrentTab();
+  if (!tab) throw { message: 'No active tab' };
+  const pageData = await requestPageData(tab.id);
+  if (!pageData) throw { message: 'Content script not responding. Refresh the page and try again.' };
 
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), API_TIMEOUT);
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), API_TIMEOUT);
 
-    const response = await fetch(`${API_BASE_URL}/api/v1/analyze`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ pageData, tier: 'free' }),
-      signal: controller.signal
-    });
-    clearTimeout(timeout);
+  const response = await fetch(`${API_BASE_URL}/api/v1/analyze`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ pageData, tier: 'free' }),
+    signal: controller.signal
+  });
+  clearTimeout(timeout);
 
-    if (!response.ok) return null;
-    const result = await response.json();
-    if (result.success) {
-      await cacheResult(domain, result);
-      return result;
-    }
-    return null;
-  } catch { return null; }
+  if (!response.ok) throw { status: response.status, message: `HTTP ${response.status}` };
+  const result = await response.json();
+  if (!result.success) throw { message: 'API returned error' };
+
+  await cacheResult(domain, result);
+  return result;
 }
 
 /* ================================
